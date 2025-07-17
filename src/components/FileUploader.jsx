@@ -147,7 +147,6 @@ const headerStyle = {
   marginBottom: "1.5rem",
 };
 
-// ✅ NEW: wrap dropzone and button in column layout
 const formGroupStyle = {
   display: "flex",
   flexDirection: "column",
