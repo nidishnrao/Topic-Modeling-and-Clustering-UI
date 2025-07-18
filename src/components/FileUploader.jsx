@@ -7,13 +7,13 @@ export default function FileUploader() {
   const [loading, setLoading] = useState(false);
   const [links, setLinks] = useState(null);
   const [status, setStatus] = useState("");
-  const [showIframe, setShowIframe] = useState(false);
+  const [showVisuals, setShowVisuals] = useState(false);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setLinks(null);
     setStatus("");
-    setShowIframe(false);
+    setShowVisuals(false);
   };
 
   const handleUpload = async () => {
@@ -66,7 +66,6 @@ export default function FileUploader() {
       <div style={containerStyle}>
         <h2 style={headerStyle}>📁 Upload CSV or Excel for Topic Modeling</h2>
 
-        {/* Wrap dropzone + button in vertical stack */}
         <div style={formGroupStyle}>
           <label htmlFor="file" style={dropZoneStyle}>
             {file ? file.name : "Click to upload file"}
@@ -98,7 +97,7 @@ export default function FileUploader() {
 
         {links && (
           <div style={resultContainer}>
-            <h3>✅ Output Files</h3>
+            <h3>✅ Output</h3>
             <ul style={ulStyle}>
               {links.report && (
                 <li>
@@ -107,29 +106,53 @@ export default function FileUploader() {
                   </a>
                 </li>
               )}
-              {links.hierarchy && (
-                <li>
-                  <button
-                    style={linkStyle}
-                    onClick={() => setShowIframe((prev) => !prev)}
-                  >
-                    🌳 {showIframe ? "Hide" : "View"} Hierarchy Visualization
-                  </button>
-                </li>
-              )}
+              <li>
+                <button
+                  style={linkStyle}
+                  onClick={() => setShowVisuals((prev) => !prev)}
+                >
+                  📊 {showVisuals ? "Hide" : "View"} Visualizations
+                </button>
+              </li>
             </ul>
           </div>
         )}
       </div>
 
-      {showIframe && links?.hierarchy && (
-        <div style={fullscreenIframeWrapperStyle}>
-          <iframe
-            src={links.hierarchy}
-            title="Topic Hierarchy"
-            style={fullscreenIframeStyle}
-            sandbox="allow-scripts allow-same-origin"
-          />
+      {showVisuals && links && (
+        <div style={gridWrapperStyle}>
+          {links.hierarchy && (
+            <iframe
+              src={links.hierarchy}
+              title="Hierarchy"
+              style={gridItemStyle}
+              sandbox="allow-scripts allow-same-origin"
+            />
+          )}
+          {links.barchart && (
+            <iframe
+              src={links.barchart}
+              title="Bar Chart"
+              style={gridItemStyle}
+              sandbox="allow-scripts allow-same-origin"
+            />
+          )}
+          {links.distribution && (
+            <iframe
+              src={links.distribution}
+              title="Distribution"
+              style={gridItemStyle}
+              sandbox="allow-scripts allow-same-origin"
+            />
+          )}
+          {links.heatmap && (
+            <iframe
+              src={links.heatmap}
+              title="Heatmap"
+              style={gridItemStyle}
+              sandbox="allow-scripts allow-same-origin"
+            />
+          )}
         </div>
       )}
     </>
@@ -216,18 +239,18 @@ const linkStyle = {
   cursor: "pointer",
 };
 
-const fullscreenIframeWrapperStyle = {
-  width: "100%",
-  padding: "2rem 0",
-  display: "flex",
-  justifyContent: "center",
+const gridWrapperStyle = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: "1.5rem",
+  padding: "2rem",
   backgroundColor: "#f9f9f9",
+  justifyContent: "center",
 };
 
-const fullscreenIframeStyle = {
-  width: "90vw",
-  maxWidth: "1200px",
-  height: "650px",
+const gridItemStyle = {
+  width: "100%",
+  height: "400px",
   border: "1px solid #ccc",
   borderRadius: "8px",
   boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
