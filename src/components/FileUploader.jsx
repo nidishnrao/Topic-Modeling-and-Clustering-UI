@@ -64,59 +64,61 @@ export default function FileUploader() {
   return (
     <>
       <div style={containerStyle}>
-        <h2 style={headerStyle}>📁 Upload CSV or Excel for Topic Modeling</h2>
+        <div style={formWrapperStyle}>
+          <h2 style={headerStyle}>📁 Upload CSV or Excel for Topic Modeling</h2>
 
-        <div style={formGroupStyle}>
-          <label htmlFor="file" style={dropZoneStyle}>
-            {file ? file.name : "Click to upload file"}
-            <input
-              type="file"
-              accept=".csv, .xlsx"
-              id="file"
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-            />
-          </label>
+          <div style={formGroupStyle}>
+            <label htmlFor="file" style={dropZoneStyle}>
+              {file ? file.name : "Click to upload file"}
+              <input
+                type="file"
+                accept=".csv, .xlsx"
+                id="file"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </label>
 
-          <button
-            disabled={!file || loading}
-            onClick={handleUpload}
-            style={buttonStyle}
-          >
-            {loading ? (
-              <>
-                <span style={spinnerStyle}></span> Processing...
-              </>
-            ) : (
-              "Upload & Process"
-            )}
-          </button>
-        </div>
-
-        {status && <p style={statusStyle}>{status}</p>}
-
-        {links && (
-          <div style={resultContainer}>
-            <h3>✅ Output</h3>
-            <ul style={ulStyle}>
-              {links.report && (
-                <li>
-                  <a href={links.report} download style={linkStyle}>
-                    📄 Download CSV Report
-                  </a>
-                </li>
+            <button
+              disabled={!file || loading}
+              onClick={handleUpload}
+              style={buttonStyle}
+            >
+              {loading ? (
+                <>
+                  <span style={spinnerStyle}></span> Processing...
+                </>
+              ) : (
+                "Upload & Process"
               )}
-              <li>
-                <button
-                  style={linkStyle}
-                  onClick={() => setShowVisuals((prev) => !prev)}
-                >
-                  📊 {showVisuals ? "Hide" : "View"} Visualizations
-                </button>
-              </li>
-            </ul>
+            </button>
           </div>
-        )}
+
+          {status && <p style={statusStyle}>{status}</p>}
+
+          {links && (
+            <div style={resultContainer}>
+              <h3>Output</h3>
+              <ul style={ulStyle}>
+                {links.report && (
+                  <li>
+                    <a href={links.report} download style={linkStyle}>
+                      Download CSV Report
+                    </a>
+                  </li>
+                )}
+                <li>
+                  <button
+                    style={linkStyle}
+                    onClick={() => setShowVisuals((prev) => !prev)}
+                  >
+                    {showVisuals ? "Hide" : "View"} Visualizations
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
 
       {showVisuals && links && (
@@ -160,14 +162,32 @@ export default function FileUploader() {
 }
 
 const containerStyle = {
+  backgroundColor: "#f3f4f6",
+  minHeight: "100vh",
+  padding: "2rem 1rem",
+};
+
+const pageTitleStyle = {
   textAlign: "center",
+  fontSize: "2rem",
+  fontWeight: "bold",
+  marginBottom: "2rem",
+};
+
+const formWrapperStyle = {
+
+  margin: "0 auto",
+  backgroundColor: "#ffffff",
+  borderRadius: "12px",
   padding: "2rem",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
 };
 
 const headerStyle = {
-  fontSize: "1.5rem",
-  fontWeight: "bold",
+  fontSize: "1.25rem",
+  fontWeight: "600",
   marginBottom: "1.5rem",
+  textAlign: "center",
 };
 
 const formGroupStyle = {
@@ -179,13 +199,13 @@ const formGroupStyle = {
 
 const dropZoneStyle = {
   padding: "2rem",
-  width: "90%",
-  maxWidth: "500px",
+  width: "100%",
   border: "2px dashed #ccc",
   borderRadius: "10px",
   cursor: "pointer",
   backgroundColor: "#f7f7f7",
   fontSize: "1rem",
+  textAlign: "center",
 };
 
 const buttonStyle = {
@@ -214,10 +234,12 @@ const statusStyle = {
   marginTop: "1rem",
   fontStyle: "italic",
   color: "#555",
+  textAlign: "center",
 };
 
 const resultContainer = {
   marginTop: "2rem",
+  textAlign: "center",
 };
 
 const ulStyle = {
@@ -241,11 +263,10 @@ const linkStyle = {
 
 const gridWrapperStyle = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
   gap: "1.5rem",
   padding: "2rem",
   backgroundColor: "#f9f9f9",
-  justifyContent: "center",
 };
 
 const gridItemStyle = {
